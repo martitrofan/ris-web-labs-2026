@@ -172,7 +172,7 @@ git commit -m "ЛР1: заявка на тему и требования"
 
 ### Что писать в заявке
 
-Скопируйте шаблон [project-proposal.md](templates/project-proposal.md) в свой репозиторий как `docs/project-proposal.md` и заполните:
+Скопируйте шаблон [project-proposal.md](/labs/01/templates/project-proposal) в свой репозиторий как `docs/project-proposal.md` и заполните:
 
 1. Название и организация (конкретная, не «некая фирма»).
 2. Главная сущность и справочник.
@@ -206,7 +206,7 @@ git commit -m "ЛР1: заявка на тему и требования"
 
 ## Как заполнить ТЗ
 
-Скопируйте [lab-01-requirements.md](templates/lab-01-requirements.md) → `docs/lab-01-requirements.md` в своём репозитории.  
+Скопируйте [lab-01-requirements.md](/labs/01/templates/lab-01-requirements) → `docs/lab-01-requirements.md` в своём репозитории.  
 Пустые «…» к сдаче не оставляйте.
 
 | Раздел | Минимум |

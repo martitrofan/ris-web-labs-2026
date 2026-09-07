@@ -66,16 +66,18 @@
       var open = isAccessible(lab);
       var title = 'ЛР' + lab.number + '. ' + lab.title;
       if (!open) {
-        lines.push('- [' + title + ' 🔒](labs/' + lab.id + '/)');
+        lines.push('- [' + title + ' 🔒](/labs/' + lab.id + '/)');
         return;
       }
       lines.push('- **' + title + '**');
       (lab.sidebar || []).forEach(function (item) {
-        lines.push('  - [' + item.label + '](' + item.path + ')');
+        var p = item.path || '';
+        if (p.charAt(0) !== '/') p = '/' + p;
+        lines.push('  - [' + item.label + '](' + p + ')');
       });
       lines.push('');
     });
-    lines.push('', '- [Как добавить доступ](guide)');
+    lines.push('', '- [Как добавить доступ](/guide)');
     return lines.join('\n');
   }
 
