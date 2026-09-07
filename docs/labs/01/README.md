@@ -6,10 +6,10 @@
 
 | Материал | Зачем |
 |----------|--------|
-| [Методичка](#/labs/01/method) | шаги, выбор темы (50 примеров), Git, чеклист сдачи |
-| [Карточка](#/labs/01/lab) | теория простыми словами |
-| [Шаблон: заявка на тему](#/labs/01/templates/project-proposal) | скопировать в свой репозиторий → `/docs/project-proposal.md` |
-| [Шаблон: ТЗ](#/labs/01/templates/lab-01-requirements) | скопировать → `/docs/lab-01-requirements.md` |
+| [Методичка](/labs/01/method) | шаги, выбор темы (50 примеров), Git, чеклист сдачи |
+| [Карточка](/labs/01/lab) | теория простыми словами |
+| [Шаблон: заявка на тему](/labs/01/templates/project-proposal) | скопировать в свой репозиторий → `/docs/project-proposal.md` |
+| [Шаблон: ТЗ](/labs/01/templates/lab-01-requirements) | скопировать → `/docs/lab-01-requirements.md` |
 
 ## Что сдать
 

@@ -6,8 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Каталог лабораторных работ курса РИС и Web (КГЭУ)">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link rel="stylesheet" href="assets/site.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
+  <meta name="theme-color" content="#1f4b7a">
+  <link rel="stylesheet" href="vendor/vue.css">
+  <link rel="stylesheet" href="assets/site.css?v=9">
 </head>
 <body>
   <div id="app">Загрузка…</div>
@@ -20,7 +24,9 @@
       auto2top: true,
       relativePath: false,
       alias: {
-        '/.*/_sidebar.md': '/_sidebar.md'
+        '/.*/_sidebar.md': '/_sidebar.md',
+        '/labs/01': '/labs/01/README.md',
+        '/labs/01/': '/labs/01/README.md'
       },
       homepage: 'README.md',
       search: {
@@ -28,18 +34,11 @@
         noData: 'Ничего не найдено',
         depth: 3
       },
-      pagination: {
-        previousText: 'Назад',
-        nextText: 'Дальше',
-        crossChapter: true
-      },
       plugins: []
     };
   </script>
-  <script src="assets/labs-gate.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+  <script src="assets/labs-gate.js?v=9"></script>
+  <script src="vendor/docsify.min.js"></script>
+  <script src="vendor/search.min.js"></script>
 </body>
 </html>

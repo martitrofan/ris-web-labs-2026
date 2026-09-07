@@ -50,11 +50,89 @@
   font-size: 0.92rem;
 }
 
-.sidebar-nav .lab-locked a {
-  opacity: 0.55;
+.sidebar-nav ul.labs-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.sidebar-nav .lab-locked a::after {
-  content: ' 🔒';
-  font-size: 0.85em;
+.sidebar-nav .labs-menu li {
+  list-style: none;
+  margin: 0;
+}
+
+.sidebar-nav .labs-menu-home a,
+.sidebar-nav .labs-menu-pages a {
+  display: block;
+  padding: 0.35rem 0.25rem 0.35rem 0.5rem;
+  color: #364149;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.sidebar-nav .labs-menu-home.active a,
+.sidebar-nav .labs-menu-pages li.active > a {
+  background: rgba(31, 75, 122, 0.12);
+  color: var(--theme-color);
+  font-weight: 600;
+}
+
+.sidebar-nav .labs-menu-home a:hover,
+.sidebar-nav .labs-menu-pages a:hover {
+  color: var(--theme-color);
+}
+
+.sidebar-nav .labs-menu-summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.45rem 0.25rem;
+  font-weight: 600;
+  color: #24292f;
+  user-select: none;
+}
+
+.sidebar-nav .labs-menu-summary:hover {
+  color: var(--theme-color);
+}
+
+.sidebar-nav .labs-menu-summary.is-overview {
+  color: var(--theme-color);
+}
+
+.sidebar-nav .labs-menu-summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar-nav .labs-menu-summary::before {
+  content: '▸';
+  display: inline-block;
+  width: 1rem;
+  color: #57606a;
+  transition: transform 0.12s ease;
+}
+
+.sidebar-nav .labs-menu-details[open] > .labs-menu-summary::before {
+  transform: rotate(90deg);
+}
+
+.sidebar-nav .labs-menu-pages {
+  margin: 0 0 0.4rem;
+  padding: 0 0 0 0.85rem;
+  list-style: none;
+  border-left: 2px solid #eaecef;
+}
+
+/* Docsify theme forces ul { display:block }, иначе details не сворачивается */
+.sidebar-nav .labs-menu-details:not([open]) > .labs-menu-pages {
+  display: none !important;
+}
+
+.sidebar-nav .labs-menu-locked {
+  padding: 0.45rem 0.25rem 0.45rem 1.25rem;
+  color: #8c959f;
+  font-weight: 600;
+}
+
+.sidebar-nav .labs-menu-lab.is-current > .labs-menu-details > .labs-menu-summary {
+  color: var(--theme-color);
 }

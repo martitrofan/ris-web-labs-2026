@@ -3,6 +3,7 @@
 
   var catalog = null;
   var catalogPromise = null;
+  var COLLAPSE_KEY = 'ris-web-labs-2026-sidebar-open';
 
   function loadCatalog() {
     if (catalog) return Promise.resolve(catalog);
@@ -33,24 +34,39 @@
     sessionStorage.setItem(storageKey, JSON.stringify(map));
   }
 
-  /** Route without #, leading slash, .md, trailing slash */
+  function getOpenLabs() {
+    try {
+      return JSON.parse(sessionStorage.getItem(COLLAPSE_KEY) || '{}');
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function setLabOpen(labId, open) {
+    var map = getOpenLabs();
+    if (open) map[labId] = true;
+    else delete map[labId];
+    sessionStorage.setItem(COLLAPSE_KEY, JSON.stringify(map));
+  }
+
   function normalizePath(path) {
     if (!path) return '';
     return String(path)
       .replace(/^#\/?/, '')
       .replace(/\.md$/i, '')
       .replace(/^\//, '')
+      .replace(/\/index$/i, '')
       .replace(/\/$/, '');
   }
 
-  /** Docsify-safe link from site root (hash router, GH Pages project sites) */
-  function toHashLink(path) {
-    var p = normalizePath(path);
-    if (!p || p === 'README') return '#/';
-    return '#/' + p;
+  /** labs/01 и labs/01/ → labs/01/README (иначе Docsify ищет labs/01.md → 404) */
+  function canonicalizePath(path) {
+    var p = normalizePath(collapseDoubledLabs(path));
+    if (/^labs\/\d{2}$/.test(p)) return p + '/README';
+    if (/^labs\/\d{2}\/README$/i.test(p)) return p.replace(/README$/i, 'README');
+    return p;
   }
 
-  /** Collapse /labs/01/labs/01/method → labs/01/method */
   function collapseDoubledLabs(path) {
     var p = String(path || '');
     var prev;
@@ -61,8 +77,29 @@
     return p;
   }
 
+  function currentRoutePath() {
+    var hash = window.location.hash || '#/';
+    return canonicalizePath(hash.replace(/^#\/?/, ''));
+  }
+
+  function routeEquals(a, b) {
+    return canonicalizePath(a) === canonicalizePath(b);
+  }
+
+  function labOverviewPath(labId) {
+    return 'labs/' + labId + '/README';
+  }
+
+  function isOverviewSidebarItem(lab, item) {
+    var path = canonicalizePath(item && item.path);
+    if (!path || !lab) return false;
+    if (routeEquals(path, labOverviewPath(lab.id))) return true;
+    if (/^labs\/\d{2}$/.test(path) && path === 'labs/' + lab.id) return true;
+    return false;
+  }
+
   function labIdFromPath(path) {
-    var m = normalizePath(collapseDoubledLabs(path)).match(/^labs\/(\d{2})(?:\/|$)/);
+    var m = canonicalizePath(path).match(/^labs\/(\d{2})(?:\/|$)/);
     return m ? m[1] : null;
   }
 
@@ -78,28 +115,32 @@
     if (!lab || lab.published === false) return false;
     if (lab.unlocked === true) return true;
     if (!lab.unlockCode) return false;
-    var unlocks = getUnlocks(catalog.storageKey);
-    return !!unlocks[lab.id];
+    return !!getUnlocks(catalog.storageKey)[lab.id];
   }
 
-  function buildSidebarMarkdown() {
-    var lines = ['- [Главная](#/)', '', '**Лабораторные**', ''];
-    (catalog.labs || []).forEach(function (lab) {
-      if (lab.published === false) return;
-      var open = isAccessible(lab);
-      var title = 'ЛР' + lab.number + '. ' + lab.title;
-      if (!open) {
-        lines.push('- [' + title + ' 🔒](' + toHashLink('labs/' + lab.id + '/') + ')');
-        return;
-      }
-      lines.push('- **' + title + '**');
-      (lab.sidebar || []).forEach(function (item) {
-        lines.push('  - [' + item.label + '](' + toHashLink(item.path) + ')');
-      });
-      lines.push('');
-    });
-    return lines.join('\n');
+  function navigate(path) {
+    var clean = canonicalizePath(path);
+    var next = clean ? '#/' + clean : '#/';
+    if (window.location.hash === next) return;
+    window.location.hash = next;
   }
+
+  function redirectBareLabIndex() {
+    var hash = window.location.hash || '';
+    var m = hash.match(/^#\/?(labs\/\d{2})\/?$/);
+    if (!m) return false;
+    var target = '#/' + m[1] + '/README';
+    if (hash === target || hash === '#/' + m[1] + '/README.md') return false;
+    window.location.replace(
+      window.location.pathname + window.location.search + target
+    );
+    return true;
+  }
+
+  redirectBareLabIndex();
+  window.addEventListener('hashchange', function () {
+    redirectBareLabIndex();
+  });
 
   function renderGate(lab) {
     return (
@@ -127,8 +168,8 @@
       if (value === String(lab.unlockCode).trim()) {
         setUnlock(catalog.storageKey, lab.id);
         if (err) err.hidden = true;
-        location.hash = '#/labs/' + lab.id + '/';
-        location.reload();
+        navigate(labOverviewPath(lab.id));
+        window.location.reload();
       } else if (err) {
         err.hidden = false;
       }
@@ -139,29 +180,145 @@
     });
   }
 
-  function fixSidebarHrefs() {
-    var sidebar = document.querySelector('.sidebar-nav');
-    if (!sidebar) return;
-    sidebar.querySelectorAll('a[href]').forEach(function (a) {
-      var href = a.getAttribute('href') || '';
-      if (href.indexOf('labs/') === -1) return;
+  function ensureSidebarRoot() {
+    var sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return null;
+    var nav = sidebar.querySelector('.sidebar-nav');
+    if (!nav) {
+      nav = document.createElement('div');
+      nav.className = 'sidebar-nav';
+      sidebar.appendChild(nav);
+    }
+    return nav;
+  }
 
-      var hashIdx = href.indexOf('#');
-      var hashPart = hashIdx >= 0 ? href.slice(hashIdx + 1) : href;
-      hashPart = hashPart.replace(/^\//, '');
-      var collapsed = collapseDoubledLabs(hashPart.replace(/^\//, ''));
-      var fixed = toHashLink(collapsed);
-      if (a.getAttribute('href') !== fixed) {
-        a.setAttribute('href', fixed);
+  function buildCustomSidebarHtml(activePath) {
+    var openMap = getOpenLabs();
+    var activeLab = labIdFromPath(activePath);
+    var html = '';
+
+    html += '<ul class="labs-menu">';
+    html +=
+      '<li class="labs-menu-home' +
+      (!activePath ? ' active' : '') +
+      '"><a href="#/" data-lab-nav="home">Главная</a></li>';
+
+    (catalog.labs || []).forEach(function (lab) {
+      if (lab.published === false) return;
+      var open = isAccessible(lab);
+      var title = 'ЛР' + lab.number + '. ' + lab.title;
+      var isCurrent = activeLab === lab.id;
+      var expanded = isCurrent || !!openMap[lab.id];
+
+      if (!open) {
+        html +=
+          '<li class="labs-menu-locked">' +
+          '<span class="labs-menu-locked-title">' +
+          title +
+          ' 🔒</span></li>';
+        return;
       }
 
-      var labId = labIdFromPath(collapsed);
-      if (!labId || !catalog) return;
-      var item = findLab(labId);
-      if (item && !isAccessible(item)) {
-        a.parentElement && a.parentElement.classList.add('lab-locked');
-      }
+      html +=
+        '<li class="labs-menu-lab' +
+        (isCurrent ? ' is-current' : '') +
+        '">' +
+        '<details class="labs-menu-details" data-lab-id="' +
+        lab.id +
+        '"' +
+        (expanded ? ' open' : '') +
+        '>' +
+        '<summary class="labs-menu-summary' +
+        (routeEquals(labOverviewPath(lab.id), activePath) ? ' is-overview' : '') +
+        '" data-lab-overview="' +
+        lab.id +
+        '" title="Открыть обзор ЛР' +
+        lab.number +
+        '">' +
+        title +
+        '</summary>' +
+        '<ul class="labs-menu-pages">';
+
+      (lab.sidebar || []).forEach(function (item) {
+        if (isOverviewSidebarItem(lab, item)) return;
+        var path = canonicalizePath(item.path);
+        var active = routeEquals(path, activePath);
+        html +=
+          '<li' +
+          (active ? ' class="active"' : '') +
+          '><a href="#/' +
+          path +
+          '">' +
+          item.label +
+          '</a></li>';
+      });
+
+      html += '</ul></details></li>';
     });
+
+    html += '</ul>';
+    return html;
+  }
+
+  function wireCustomSidebar(nav) {
+    if (!nav || nav.dataset.labsWired === '1') return;
+    nav.dataset.labsWired = '1';
+
+    // Не перехватываем клики по ссылкам страниц: нативный #/… обновляет Docsify.
+    // Клик по заголовку ЛР → раскрыть + показать обзор (README).
+
+    nav.addEventListener(
+      'click',
+      function (e) {
+        var summary = e.target.closest
+          ? e.target.closest('summary.labs-menu-summary')
+          : null;
+        if (!summary || !nav.contains(summary)) return;
+        var details = summary.closest
+          ? summary.closest('details.labs-menu-details')
+          : summary.parentElement;
+        if (!details) return;
+        var labId = details.getAttribute('data-lab-id');
+        if (!labId) return;
+
+        var overview = labOverviewPath(labId);
+        var onOverview = routeEquals(overview, currentRoutePath());
+
+        // Уже на обзоре и блок открыт — даём свернуть нативным toggle.
+        if (details.open && onOverview) {
+          return;
+        }
+
+        e.preventDefault();
+        details.open = true;
+        setLabOpen(labId, true);
+        navigate(overview);
+      },
+      true
+    );
+
+    nav.addEventListener(
+      'toggle',
+      function (e) {
+        var details = e.target;
+        if (!details.classList || !details.classList.contains('labs-menu-details'))
+          return;
+        var labId = details.getAttribute('data-lab-id');
+        if (labId) setLabOpen(labId, details.open);
+      },
+      true
+    );
+  }
+
+  function renderCustomSidebar() {
+    if (!catalog) return;
+    var nav = ensureSidebarRoot();
+    if (!nav) return;
+    var activePath = currentRoutePath();
+    nav.innerHTML = buildCustomSidebarHtml(activePath);
+    // re-bind after innerHTML wipe
+    nav.dataset.labsWired = '0';
+    wireCustomSidebar(nav);
   }
 
   function installPlugin() {
@@ -175,19 +332,39 @@
         });
       });
 
+      hook.mounted(function () {
+        loadCatalog().then(renderCustomSidebar);
+      });
+
       hook.beforeEach(function (content, next) {
         loadCatalog()
           .then(function () {
-            var raw = normalizePath(vm.route.path || '');
-            var clean = normalizePath(collapseDoubledLabs(raw));
-            if (raw && clean && raw !== clean) {
+            var raw = String(vm.route.path || '');
+            var bare = normalizePath(collapseDoubledLabs(raw));
+            var path = canonicalizePath(raw);
+
+            if (/^labs\/\d{2}$/.test(bare) && path !== bare) {
               window.location.replace(
-                window.location.pathname + window.location.search + '#/' + clean
+                window.location.pathname + window.location.search + '#/' + path
               );
               next(content);
               return;
             }
-            var path = clean;
+
+            if (bare && path && bare !== path && bare.indexOf('labs/') === 0) {
+              var doubled = collapseDoubledLabs(raw);
+              if (normalizePath(doubled) !== normalizePath(raw)) {
+                window.location.replace(
+                  window.location.pathname +
+                    window.location.search +
+                    '#/' +
+                    canonicalizePath(doubled)
+                );
+                next(content);
+                return;
+              }
+            }
+
             var id = labIdFromPath(path);
             if (!id) {
               next(content);
@@ -198,7 +375,7 @@
               next(
                 '# Материал ещё не опубликован\n\n' +
                   'Эта лабораторная пока не добавлена в каталог. ' +
-                  'Вернитесь на [главную](#/) и откройте доступные работы.\n'
+                  'Вернитесь на [главную](/) и откройте доступные работы.\n'
               );
               return;
             }
@@ -214,31 +391,19 @@
       });
 
       hook.doneEach(function () {
-        if (!catalog) return;
-        var path = normalizePath(collapseDoubledLabs(vm.route.path || ''));
-        var id = labIdFromPath(path);
-        var lab = id ? findLab(id) : null;
-        if (lab && !isAccessible(lab) && lab.unlockCode) {
-          wireGate(lab);
-        }
-        fixSidebarHrefs();
+        loadCatalog().then(function () {
+          var path = canonicalizePath(vm.route.path || '');
+          var id = labIdFromPath(path);
+          var lab = id ? findLab(id) : null;
+          if (lab && !isAccessible(lab) && lab.unlockCode) {
+            wireGate(lab);
+          }
+          if (id) setLabOpen(id, true);
+          renderCustomSidebar();
+        });
       });
     });
   }
 
   installPlugin();
-
-  var origFetch = window.fetch;
-  window.fetch = function (input, init) {
-    var url = typeof input === 'string' ? input : (input && input.url) || '';
-    if (/_sidebar\.md(\?|$)/.test(url)) {
-      return loadCatalog().then(function () {
-        return new Response(buildSidebarMarkdown(), {
-          status: 200,
-          headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
-        });
-      });
-    }
-    return origFetch.apply(this, arguments);
-  };
 })();
