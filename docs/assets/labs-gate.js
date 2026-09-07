@@ -33,6 +33,7 @@
     sessionStorage.setItem(storageKey, JSON.stringify(map));
   }
 
+  /** Route without #, leading slash, .md, trailing slash */
   function normalizePath(path) {
     if (!path) return '';
     return String(path)
@@ -42,8 +43,26 @@
       .replace(/\/$/, '');
   }
 
+  /** Docsify-safe link from site root (hash router, GH Pages project sites) */
+  function toHashLink(path) {
+    var p = normalizePath(path);
+    if (!p || p === 'README') return '#/';
+    return '#/' + p;
+  }
+
+  /** Collapse /labs/01/labs/01/method → labs/01/method */
+  function collapseDoubledLabs(path) {
+    var p = String(path || '');
+    var prev;
+    do {
+      prev = p;
+      p = p.replace(/(labs\/\d{2}\/)\1+/g, '$1');
+    } while (p !== prev);
+    return p;
+  }
+
   function labIdFromPath(path) {
-    var m = normalizePath(path).match(/^labs\/(\d{2})(?:\/|$)/);
+    var m = normalizePath(collapseDoubledLabs(path)).match(/^labs\/(\d{2})(?:\/|$)/);
     return m ? m[1] : null;
   }
 
@@ -64,28 +83,25 @@
   }
 
   function buildSidebarMarkdown() {
-    var lines = ['- [Главная](/)', '', '**Лабораторные**', ''];
+    var lines = ['- [Главная](#/)', '', '**Лабораторные**', ''];
     (catalog.labs || []).forEach(function (lab) {
       if (lab.published === false) return;
       var open = isAccessible(lab);
       var title = 'ЛР' + lab.number + '. ' + lab.title;
       if (!open) {
-        lines.push('- [' + title + ' 🔒](/labs/' + lab.id + '/)');
+        lines.push('- [' + title + ' 🔒](' + toHashLink('labs/' + lab.id + '/') + ')');
         return;
       }
       lines.push('- **' + title + '**');
       (lab.sidebar || []).forEach(function (item) {
-        var p = item.path || '';
-        if (p.charAt(0) !== '/') p = '/' + p;
-        lines.push('  - [' + item.label + '](' + p + ')');
+        lines.push('  - [' + item.label + '](' + toHashLink(item.path) + ')');
       });
       lines.push('');
     });
-    lines.push('', '- [Как добавить доступ](/guide)');
     return lines.join('\n');
   }
 
-  function renderGate(lab, path) {
+  function renderGate(lab) {
     return (
       '<div class="labs-gate">' +
       '<h2>ЛР' + lab.number + ' пока закрыта</h2>' +
@@ -111,6 +127,7 @@
       if (value === String(lab.unlockCode).trim()) {
         setUnlock(catalog.storageKey, lab.id);
         if (err) err.hidden = true;
+        location.hash = '#/labs/' + lab.id + '/';
         location.reload();
       } else if (err) {
         err.hidden = false;
@@ -119,6 +136,31 @@
     btn.addEventListener('click', tryUnlock);
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') tryUnlock();
+    });
+  }
+
+  function fixSidebarHrefs() {
+    var sidebar = document.querySelector('.sidebar-nav');
+    if (!sidebar) return;
+    sidebar.querySelectorAll('a[href]').forEach(function (a) {
+      var href = a.getAttribute('href') || '';
+      if (href.indexOf('labs/') === -1) return;
+
+      var hashIdx = href.indexOf('#');
+      var hashPart = hashIdx >= 0 ? href.slice(hashIdx + 1) : href;
+      hashPart = hashPart.replace(/^\//, '');
+      var collapsed = collapseDoubledLabs(hashPart.replace(/^\//, ''));
+      var fixed = toHashLink(collapsed);
+      if (a.getAttribute('href') !== fixed) {
+        a.setAttribute('href', fixed);
+      }
+
+      var labId = labIdFromPath(collapsed);
+      if (!labId || !catalog) return;
+      var item = findLab(labId);
+      if (item && !isAccessible(item)) {
+        a.parentElement && a.parentElement.classList.add('lab-locked');
+      }
     });
   }
 
@@ -136,7 +178,16 @@
       hook.beforeEach(function (content, next) {
         loadCatalog()
           .then(function () {
-            var path = normalizePath(vm.route.path || '');
+            var raw = normalizePath(vm.route.path || '');
+            var clean = normalizePath(collapseDoubledLabs(raw));
+            if (raw && clean && raw !== clean) {
+              window.location.replace(
+                window.location.pathname + window.location.search + '#/' + clean
+              );
+              next(content);
+              return;
+            }
+            var path = clean;
             var id = labIdFromPath(path);
             if (!id) {
               next(content);
@@ -147,12 +198,12 @@
               next(
                 '# Материал ещё не опубликован\n\n' +
                   'Эта лабораторная пока не добавлена в каталог. ' +
-                  'Вернитесь на [главную](/) и откройте доступные работы.\n'
+                  'Вернитесь на [главную](#/) и откройте доступные работы.\n'
               );
               return;
             }
             if (!isAccessible(lab)) {
-              next(renderGate(lab, path));
+              next(renderGate(lab));
               return;
             }
             next(content);
@@ -164,47 +215,19 @@
 
       hook.doneEach(function () {
         if (!catalog) return;
-        var path = normalizePath(vm.route.path || '');
+        var path = normalizePath(collapseDoubledLabs(vm.route.path || ''));
         var id = labIdFromPath(path);
         var lab = id ? findLab(id) : null;
         if (lab && !isAccessible(lab) && lab.unlockCode) {
           wireGate(lab);
         }
-
-        var sidebar = document.querySelector('.sidebar-nav');
-        if (!sidebar) return;
-        sidebar.querySelectorAll('a').forEach(function (a) {
-          var href = a.getAttribute('href') || '';
-          var labId = labIdFromPath(href.replace(/^#\//, ''));
-          if (!labId) return;
-          var item = findLab(labId);
-          if (item && !isAccessible(item)) {
-            a.parentElement && a.parentElement.classList.add('lab-locked');
-          }
-        });
-      });
-    });
-
-    // Replace static sidebar with catalog-driven one after load
-    window.$docsify.plugins.push(function (hook) {
-      hook.ready(function () {
-        loadCatalog().then(function () {
-          var el = document.getElementById('labs-sidebar-source');
-          if (el) el.textContent = buildSidebarMarkdown();
-        });
+        fixSidebarHrefs();
       });
     });
   }
 
-  // Provide dynamic sidebar file via fetch override is hard;
-  // use _sidebar.md that Docsify loads, and also rewrite after catalog load.
-  window.$docsify = window.$docsify || {};
-  var prevExt = window.$docsify.ext || [];
-  if (!Array.isArray(prevExt)) prevExt = [prevExt];
-
   installPlugin();
 
-  // Patch Docsify request for _sidebar.md to inject dynamic menu
   var origFetch = window.fetch;
   window.fetch = function (input, init) {
     var url = typeof input === 'string' ? input : (input && input.url) || '';
