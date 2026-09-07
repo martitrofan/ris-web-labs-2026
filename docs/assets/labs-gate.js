@@ -35,7 +35,11 @@
 
   function normalizePath(path) {
     if (!path) return '';
-    return String(path).replace(/^#\/?/, '').replace(/\.md$/i, '').replace(/\/$/, '');
+    return String(path)
+      .replace(/^#\/?/, '')
+      .replace(/\.md$/i, '')
+      .replace(/^\//, '')
+      .replace(/\/$/, '');
   }
 
   function labIdFromPath(path) {
