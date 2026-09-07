@@ -1,0 +1,21 @@
+{
+  "courseTitle": "РИС и Web · КГЭУ · 2026/2027",
+  "storageKey": "ris-web-labs-2026-unlocks",
+  "labs": [
+    {
+      "id": "01",
+      "number": 1,
+      "title": "Анализ и требования",
+      "published": true,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        { "path": "labs/01/", "label": "Обзор ЛР1" },
+        { "path": "labs/01/method", "label": "Методичка" },
+        { "path": "labs/01/lab", "label": "Карточка (теория)" },
+        { "path": "labs/01/templates/project-proposal", "label": "Шаблон: заявка" },
+        { "path": "labs/01/templates/lab-01-requirements", "label": "Шаблон: ТЗ" }
+      ]
+    }
+  ]
+}
