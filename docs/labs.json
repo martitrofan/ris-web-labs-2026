@@ -10,10 +10,254 @@
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
-        { "path": "labs/01/method", "label": "Методичка" },
-        { "path": "labs/01/lab", "label": "Карточка (теория)" },
-        { "path": "labs/01/templates/project-proposal", "label": "Шаблон: заявка" },
-        { "path": "labs/01/templates/lab-01-requirements", "label": "Шаблон: ТЗ" }
+        {
+          "path": "labs/01/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/01/lab",
+          "label": "Карточка (теория)"
+        },
+        {
+          "path": "labs/01/templates/project-proposal",
+          "label": "Шаблон: заявка"
+        },
+        {
+          "path": "labs/01/templates/lab-01-requirements",
+          "label": "Шаблон: ТЗ"
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "number": 2,
+      "title": "Архитектура и модель данных",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/02/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/02/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "number": 3,
+      "title": "Vue: каркас и экраны",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/03/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/03/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "number": 4,
+      "title": "Vue: компоненты и маршруты",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/04/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/04/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "number": 5,
+      "title": "Vue: форма и список в памяти",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/05/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/05/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "number": 6,
+      "title": "Vue: клиент API",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/06/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/06/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "number": 7,
+      "title": "Каркас Web API",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/07/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/07/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "number": 8,
+      "title": "REST: заявки и валидация",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/08/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/08/lab",
+          "label": "Карточка (теория)"
+        },
+        {
+          "path": "labs/08/templates/api-collection-postman",
+          "label": "Шаблон: Postman"
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "number": 9,
+      "title": "PostgreSQL и SQL",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/09/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/09/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "number": 10,
+      "title": "EF Core и PostgreSQL",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/10/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/10/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "number": 11,
+      "title": "Вход и доступ",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/11/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/11/lab",
+          "label": "Карточка (теория)"
+        },
+        {
+          "path": "labs/11/templates/role-matrix-sample",
+          "label": "Шаблон: матрица ролей"
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "number": 12,
+      "title": "Сквозная сборка",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/12/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/12/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "number": 13,
+      "title": "Предзащита",
+      "published": false,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/13/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/13/lab",
+          "label": "Карточка (теория)"
+        },
+        {
+          "path": "labs/13/templates/lab-report",
+          "label": "Шаблон: отчёт"
+        },
+        {
+          "path": "labs/13/templates/kursovaya-zapiska",
+          "label": "Шаблон: курсовая"
+        }
       ]
     }
   ]

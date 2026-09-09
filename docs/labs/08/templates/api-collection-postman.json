@@ -1,0 +1,80 @@
+{
+  "info": {
+    "name": "КГЭУ РИС — заявки (учебная коллекция ЛР8)",
+    "description": "Импортировать в Postman/Insomnia. Заменить tickets и поля на свои из таблицы соответствия ЛР1. Базовый URL: http://localhost:5000. Ожидания: 201 / 400 / 404 (409 желателен).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "resource",
+      "value": "tickets"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 POST create — 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-Id", "value": "1" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Насос участка Б не запускается\",\n  \"siteId\": 2,\n  \"description\": \"После грозы гудит и встаёт через минуту\"\n}"
+        },
+        "url": "{{baseUrl}}/api/{{resource}}"
+      }
+    },
+    {
+      "name": "02 POST create short title — 400",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-Id", "value": "1" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Нас\",\n  \"siteId\": 2,\n  \"description\": \"После грозы гудит и встаёт через минуту\"\n}"
+        },
+        "url": "{{baseUrl}}/api/{{resource}}"
+      }
+    },
+    {
+      "name": "03 GET by missing id — 404",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/{{resource}}/999999"
+      }
+    },
+    {
+      "name": "04 GET list — 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/{{resource}}"
+      }
+    },
+    {
+      "name": "05 PATCH status without assignee — 409 (желательно)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-Id", "value": "2" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"InProgress\"\n}"
+        },
+        "url": "{{baseUrl}}/api/{{resource}}/1/status"
+      }
+    }
+  ]
+}
