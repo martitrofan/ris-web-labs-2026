@@ -32,7 +32,7 @@
       "id": "02",
       "number": 2,
       "title": "Архитектура и модель данных",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
