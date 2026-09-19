@@ -202,6 +202,10 @@
       '<li class="labs-menu-home' +
       (!activePath ? ' active' : '') +
       '"><a href="#/" data-lab-nav="home">Главная</a></li>';
+    html +=
+      '<li class="labs-menu-home' +
+      (routeEquals(activePath, 'students') ? ' active' : '') +
+      '"><a href="#/students" data-lab-nav="students">Статус проверки</a></li>';
 
     (catalog.labs || []).forEach(function (lab) {
       if (lab.published === false) return;
