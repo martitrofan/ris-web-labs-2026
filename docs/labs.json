@@ -50,7 +50,7 @@
       "id": "03",
       "number": 3,
       "title": "Vue: каркас и экраны",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [

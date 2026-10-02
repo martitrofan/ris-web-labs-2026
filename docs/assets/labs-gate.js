@@ -325,6 +325,18 @@
     wireCustomSidebar(nav);
   }
 
+  function highlightRepoAlertRows() {
+    var rows = document.querySelectorAll('.markdown-section table tbody tr');
+    for (var i = 0; i < rows.length; i++) {
+      var tr = rows[i];
+      var text = (tr.textContent || '').toLowerCase();
+      var alert =
+        text.indexOf('нет в таблице') !== -1 || text.indexOf('недоступен') !== -1;
+      if (alert) tr.classList.add('stu-repo-alert');
+      else tr.classList.remove('stu-repo-alert');
+    }
+  }
+
   function installPlugin() {
     if (!window.$docsify) window.$docsify = {};
     if (!window.$docsify.plugins) window.$docsify.plugins = [];
@@ -395,6 +407,7 @@
       });
 
       hook.doneEach(function () {
+        highlightRepoAlertRows();
         loadCatalog().then(function () {
           var path = canonicalizePath(vm.route.path || '');
           var id = labIdFromPath(path);

@@ -136,3 +136,8 @@
 .sidebar-nav .labs-menu-lab.is-current > .labs-menu-details > .labs-menu-summary {
   color: var(--theme-color);
 }
+
+/* Статус проверки: нет репо / недоступен */
+.markdown-section table tr.stu-repo-alert td {
+  background: #ffe5e5;
+}
