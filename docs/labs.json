@@ -68,7 +68,7 @@
       "id": "04",
       "number": 4,
       "title": "Vue: компоненты и маршруты",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
@@ -86,7 +86,7 @@
       "id": "05",
       "number": 5,
       "title": "Vue: форма и список в памяти",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
@@ -104,7 +104,7 @@
       "id": "06",
       "number": 6,
       "title": "Vue: клиент API",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
