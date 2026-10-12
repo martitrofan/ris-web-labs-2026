@@ -3,6 +3,24 @@
   "storageKey": "ris-web-labs-2026-unlocks",
   "labs": [
     {
+      "id": "00",
+      "number": 0,
+      "title": "Git и GitHub",
+      "published": true,
+      "unlocked": true,
+      "unlockCode": null,
+      "sidebar": [
+        {
+          "path": "labs/00/method",
+          "label": "Методичка"
+        },
+        {
+          "path": "labs/00/lab",
+          "label": "Карточка (теория)"
+        }
+      ]
+    },
+    {
       "id": "01",
       "number": 1,
       "title": "Анализ и требования",
