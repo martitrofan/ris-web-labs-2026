@@ -140,7 +140,7 @@
       "id": "07",
       "number": 7,
       "title": "Каркас Web API",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
