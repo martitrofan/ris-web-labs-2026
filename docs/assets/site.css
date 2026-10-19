@@ -137,6 +137,26 @@
   color: var(--theme-color);
 }
 
+/* Фаза курса: пройдено / текущая / ещё не пройдена */
+.sidebar-nav .labs-menu-lab.is-phase-done > .labs-menu-details > .labs-menu-summary {
+  color: #57606a;
+  font-weight: 500;
+}
+
+.sidebar-nav .labs-menu-lab.is-phase-current > .labs-menu-details > .labs-menu-summary {
+  color: var(--theme-color);
+  font-weight: 700;
+  background: rgba(31, 75, 122, 0.1);
+  border-radius: 4px;
+  padding-left: 0.35rem;
+  padding-right: 0.35rem;
+}
+
+.sidebar-nav .labs-menu-lab.is-phase-todo > .labs-menu-details > .labs-menu-summary {
+  color: #8c959f;
+  font-weight: 500;
+}
+
 /* Статус проверки: нет репо / недоступен */
 .markdown-section table tr.stu-repo-alert td {
   background: #ffe5e5;

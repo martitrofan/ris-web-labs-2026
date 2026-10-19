@@ -210,9 +210,13 @@
     (catalog.labs || []).forEach(function (lab) {
       if (lab.published === false) return;
       var open = isAccessible(lab);
+      var phase = lab.phase || 'todo';
       var title = 'ЛР' + lab.number + '. ' + lab.title;
-      var isCurrent = activeLab === lab.id;
-      var expanded = isCurrent || !!openMap[lab.id];
+      if (phase === 'done') title = '✓ ' + title;
+      else if (phase === 'current') title = '● ' + title + ' · текущая';
+      else if (phase === 'todo') title = '○ ' + title;
+      var isRouteCurrent = activeLab === lab.id;
+      var expanded = isRouteCurrent || !!openMap[lab.id] || phase === 'current';
 
       if (!open) {
         html +=
@@ -225,7 +229,9 @@
 
       html +=
         '<li class="labs-menu-lab' +
-        (isCurrent ? ' is-current' : '') +
+        (isRouteCurrent ? ' is-current' : '') +
+        ' is-phase-' +
+        phase +
         '">' +
         '<details class="labs-menu-details" data-lab-id="' +
         lab.id +

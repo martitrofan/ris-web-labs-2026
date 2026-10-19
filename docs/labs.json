@@ -18,7 +18,8 @@
           "path": "labs/00/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "done"
     },
     {
       "id": "01",
@@ -44,7 +45,8 @@
           "path": "labs/01/templates/lab-01-requirements",
           "label": "Шаблон: ТЗ"
         }
-      ]
+      ],
+      "phase": "done"
     },
     {
       "id": "02",
@@ -62,7 +64,8 @@
           "path": "labs/02/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "done"
     },
     {
       "id": "03",
@@ -80,7 +83,8 @@
           "path": "labs/03/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "done"
     },
     {
       "id": "04",
@@ -98,7 +102,8 @@
           "path": "labs/04/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "done"
     },
     {
       "id": "05",
@@ -116,7 +121,8 @@
           "path": "labs/05/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "done"
     },
     {
       "id": "06",
@@ -134,7 +140,8 @@
           "path": "labs/06/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "done"
     },
     {
       "id": "07",
@@ -152,13 +159,14 @@
           "path": "labs/07/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "current"
     },
     {
       "id": "08",
       "number": 8,
       "title": "REST: заявки и валидация",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
@@ -174,13 +182,14 @@
           "path": "labs/08/templates/api-collection-postman",
           "label": "Шаблон: Postman"
         }
-      ]
+      ],
+      "phase": "todo"
     },
     {
       "id": "09",
       "number": 9,
       "title": "PostgreSQL и SQL",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
@@ -192,13 +201,14 @@
           "path": "labs/09/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "todo"
     },
     {
       "id": "10",
       "number": 10,
       "title": "EF Core и PostgreSQL",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
@@ -210,13 +220,14 @@
           "path": "labs/10/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "todo"
     },
     {
       "id": "11",
       "number": 11,
       "title": "Вход и доступ",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
@@ -232,13 +243,14 @@
           "path": "labs/11/templates/role-matrix-sample",
           "label": "Шаблон: матрица ролей"
         }
-      ]
+      ],
+      "phase": "todo"
     },
     {
       "id": "12",
       "number": 12,
       "title": "Сквозная сборка",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
@@ -250,13 +262,14 @@
           "path": "labs/12/lab",
           "label": "Карточка (теория)"
         }
-      ]
+      ],
+      "phase": "todo"
     },
     {
       "id": "13",
       "number": 13,
       "title": "Предзащита",
-      "published": false,
+      "published": true,
       "unlocked": true,
       "unlockCode": null,
       "sidebar": [
@@ -276,7 +289,8 @@
           "path": "labs/13/templates/kursovaya-zapiska",
           "label": "Шаблон: курсовая"
         }
-      ]
+      ],
+      "phase": "todo"
     }
   ]
 }
