@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
   <meta name="theme-color" content="#1f4b7a">
   <link rel="stylesheet" href="vendor/vue.css">
-  <link rel="stylesheet" href="assets/site.css?v=26">
+  <link rel="stylesheet" href="assets/site.css?v=27">
 </head>
 <body>
   <div id="app">Загрузка…</div>
@@ -66,13 +66,13 @@
       var open = XMLHttpRequest.prototype.open;
       XMLHttpRequest.prototype.open = function (method, url) {
         if (typeof url === 'string' && /\.md(\?|$)/.test(url)) {
-          url += (url.indexOf('?') === -1 ? '?' : '&') + 'v=26';
+          url += (url.indexOf('?') === -1 ? '?' : '&') + 'v=27';
         }
         return open.apply(this, [method, url].concat([].slice.call(arguments, 2)));
       };
     })();
   </script>
-  <script src="assets/labs-gate.js?v=26"></script>
+  <script src="assets/labs-gate.js?v=27"></script>
   <script src="vendor/docsify.min.js"></script>
   <script src="vendor/search.min.js"></script>
 </body>
