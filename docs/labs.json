@@ -160,7 +160,7 @@
           "label": "Карточка (теория)"
         }
       ],
-      "phase": "current"
+      "phase": "done"
     },
     {
       "id": "08",
@@ -183,7 +183,7 @@
           "label": "Шаблон: Postman"
         }
       ],
-      "phase": "todo"
+      "phase": "done"
     },
     {
       "id": "09",
@@ -202,7 +202,7 @@
           "label": "Карточка (теория)"
         }
       ],
-      "phase": "todo"
+      "phase": "current"
     },
     {
       "id": "10",
