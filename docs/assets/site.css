@@ -2,6 +2,40 @@
   --theme-color: #1f4b7a;
 }
 
+/* Главная: обязательная регистрация в LMS университета */
+.markdown-section .lms-register-alert {
+  margin: 0.85rem 0 1.15rem;
+  padding: 0.85rem 1rem;
+  border: 2px solid #cf222e;
+  border-left-width: 6px;
+  border-radius: 8px;
+  background: #ffebe9;
+  color: #82071e;
+}
+
+.markdown-section .lms-register-alert p {
+  margin: 0.35rem 0;
+}
+
+.markdown-section .lms-register-alert p:first-child {
+  margin-top: 0;
+}
+
+.markdown-section .lms-register-alert p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-section .lms-register-alert a {
+  color: #a40e26;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: underline;
+}
+
+.markdown-section .lms-register-alert a:hover {
+  color: #cf222e;
+}
+
 .sidebar > h1.app-name a {
   font-size: 1.05rem;
   white-space: normal;
