@@ -355,7 +355,7 @@
       return;
     }
     root.innerHTML = '<p class="sb-loading">Загрузка статусов…</p>';
-    fetch('students.json?v=36', { cache: 'no-store' })
+    fetch('students.json?v=40', { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error('students.json ' + r.status);
         return r.json();
