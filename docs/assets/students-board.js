@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  var LABS = ['lr1', 'lr2', 'lr3', 'lr4', 'lr5', 'lr6', 'lr7', 'lr8', 'lr9', 'lr10'];
-  var DEFAULT_LABS = ['lr7', 'lr8', 'lr9', 'lr10'];
+  var LABS = ['lr1', 'lr2', 'lr3', 'lr4', 'lr5', 'lr6', 'lr7', 'lr8', 'lr9', 'lr10', 'lr11', 'lr12', 'lr13'];
+  var DEFAULT_LABS = ['lr10', 'lr11', 'lr12', 'lr13'];
   var SHORT = {
     'принято': 'прин',
     'доработать': 'дораб',
@@ -242,7 +242,7 @@
       '<p class="sb-meta">' +
       escapeHtml(state.data.course || '') +
       '</p>' +
-      '<p class="sb-date">Ревью ЛР1–ЛР10: <strong>' +
+      '<p class="sb-date">Ревью ЛР1–ЛР13: <strong>' +
       escapeHtml(state.data.reviewDate || '') +
       '</strong></p>' +
       reviewSummaryHtml(state.data.students || [], labels) +
@@ -355,7 +355,7 @@
       return;
     }
     root.innerHTML = '<p class="sb-loading">Загрузка статусов…</p>';
-    fetch('students.json?v=42', { cache: 'no-store' })
+    fetch('students.json?v=43', { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error('students.json ' + r.status);
         return r.json();
